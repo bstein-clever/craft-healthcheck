@@ -1,15 +1,30 @@
 {
-	"name": "benjamin-smith/craft-healthcheck",
-	"description": "Adds a health check route to your site to indicate that Craft is health and ready to accept web traffic from a load balancer.",
-	"type": "craft-plugin",
-	"authors": [
-		{
-			"name": "Benjamin Smith",
-			"homepage": "https://www.benjaminsmith.com/"
-		}
-	],
-    "license": "MIT",
-	"require": {
-		"composer/installers": "~1.0"
-	}
+  "name": "benjaminsmith/craft_healthcheck",
+  "description": "Adds a health check route to your site to indicate that Craft is health and ready to accept web traffic from a load balancer.",
+  "type": "craft-plugin",
+  "version": "1.0.0",
+  "minimum-stability": "dev",
+  "require": {
+    "craftcms/cms": "^3.0.1"
+  },
+  "authors": [
+    {
+      "name": "Benjamin Smith",
+      "homepage": "https://www.benjaminsmith.com/"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "benjaminsmith\\craft_healthcheck\\": "src/"
+    }
+  },
+  "extra": {
+    "handle": "healthcheck",
+    "name": "Craft3 healthcheck",
+    "developer": "Benjamin Smith",
+    "components": {
+      "IpServiceService": "benjaminsmith\\craft_healthcheck\\services\\HealthCheck_IpServiceService"
+    },
+    "class": "benjaminsmith\\craft_healthcheck\\HealthCheckPlugin"
+  }
 }

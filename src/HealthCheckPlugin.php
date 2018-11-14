@@ -12,10 +12,32 @@
  * @since     1.0.0
  */
 
-namespace Craft;
+namespace benjaminsmith\craft_healthcheck;
 
-class HealthCheckPlugin extends BasePlugin
+use Craft;
+use craft\base\Plugin;
+
+use craft\events\RegisterUrlRulesEvent;
+use craft\web\UrlManager;
+use craft\web\View;
+use yii\base\Event;
+
+class HealthCheckPlugin extends Plugin
 {
+
+    public function init()
+    {
+        parent::init();
+
+        Event::on(
+            UrlManager::class,
+                UrlManager::EVENT_REGISTER_SITE_URL_RULES,
+                function(RegisterUrlRulesEvent $event) {
+                    $route = $this->getSettings()->url;
+                    $event->rules[$route] = 'healthcheck/health-check/render-health-check';
+                }
+        );
+    }
 
     public function getName()
     {
@@ -62,12 +84,9 @@ class HealthCheckPlugin extends BasePlugin
         return false;
     }
 
-    public function registerSiteRoutes()
+    protected function createSettingsModel()
     {
-        $route = craft()->config->get('url', 'healthcheck');
-        return array(
-            $route => array('action' => 'healthCheck/renderHealthCheck'),
-        );
+        return new \benjaminsmith\craft_healthcheck\models\Settings();
     }
-
 }
+
